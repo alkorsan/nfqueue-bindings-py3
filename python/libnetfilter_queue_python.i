@@ -8,6 +8,23 @@
   $1 = $input;
 }
 
+%typemap(in) char *data {
+   if (PyString_Check($input))
+   {
+     $1 = (char *)PyString_AsString($input);
+   }
+   else if  (PyUnicode_Check($input))
+   {
+     $1 = (char *)PyUnicode_AsEncodedString($input, "utf-8", "Error ~");
+     $1 = (char *)PyBytes_AS_STRING($1);
+   }
+   else
+   {
+     PyErr_SetString(PyExc_TypeError,"Expected a string.");
+     return NULL;
+   }
+}
+
 %{
 #include <arpa/inet.h>
 #include <linux/netfilter.h>
@@ -91,7 +108,7 @@ int set_callback(PyObject *pyfunc)
 };
 
 %typemap (out) const char* get_data {
-        $result = PyString_FromStringAndSize($1,arg1->len); // blah
+        $result = PyBytes_FromStringAndSize($1, arg1->len); // blah
 }
 
 %extend payload {
