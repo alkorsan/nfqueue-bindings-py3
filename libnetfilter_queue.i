@@ -19,10 +19,6 @@
 
 %include python/libnetfilter_queue_python.i
 
-#elif defined(SWIGPERL)
-
-%include perl/libnetfilter_queue_perl.i
-
 #endif
 
 
@@ -74,15 +70,15 @@ int set_verdict_mark(int d, int mark) {
 %#endif
 }
 
-int set_verdict_modified(int d, char *new_payload, int new_len) {
-        return nfq_set_verdict(self->qh, self->id, d, new_len, new_payload);
+int set_verdict_modified(int d, char *data, int size) {
+        return nfq_set_verdict(self->qh, self->id, d, size, data);
 }
 
-int set_verdict_mark_modified(int d, int mark, char *new_payload, int new_len) {
+int set_verdict_mark_modified(int d, int mark, char *data, int size) {
 %#ifdef HAVE_NFQ_SET_VERDICT2
-        return nfq_set_verdict2(self->qh, self->id, d, htonl(mark), new_len, new_payload);
+        return nfq_set_verdict2(self->qh, self->id, d, htonl(mark), size, data);
 %#else
-        return nfq_set_verdict_mark(self->qh, self->id, d, htonl(mark), new_len, new_payload);
+        return nfq_set_verdict_mark(self->qh, self->id, d, htonl(mark), size, data);
 %#endif
 }
 
