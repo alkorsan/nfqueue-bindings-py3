@@ -1,6 +1,14 @@
-# nfqueue-bindings
+# nfqueue-bindings-py3
 
-[![Build Status](https://travis-ci.org/chifflier/nfqueue-bindings.svg?branch=master)](https://travis-ci.org/chifflier/nfqueue-bindings)
+## Fork
+
+This fork has been updated to work with Python 3.
+
+```
+cmake -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3
+make
+cp ./python/*nfq $VENV/lib/python3.6/site-packages/
+```
 
 ## Overview
 
